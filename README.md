@@ -36,3 +36,7 @@ pnpm build
 ```
 
 Builds both API and Web to their respective `dist/` folders.
+
+## Database Schema
+
+The full schema is available in [`docs/dbdiagram.dbml`](docs/dbdiagram.dbml) (DBML format, compatible with dbdiagram.io).

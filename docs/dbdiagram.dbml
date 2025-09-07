@@ -1,0 +1,125 @@
+// DBML for dbdiagram.io (or similar). Unified transactions, ACLs, no owner columns.
+// Notes indicate invariants that you'd enforce with CHECK constraints in Postgres.
+
+Enum role_type {
+  viewer
+  editor
+  admin
+}
+
+table users {
+  id            bigserial [pk]
+  name          text
+  surname       text
+  email         citext [unique]
+  password_hash text
+  created_at    timestamptz
+  updated_at    timestamptz
+}
+
+table goals {
+  id            bigserial [pk]
+  name          text
+  target_amount numeric(14,2)
+  description   text
+  currency      text
+  created_at    timestamptz
+  updated_at    timestamptz
+}
+
+table piggy_banks {
+  id          bigserial [pk]
+  name        text
+  description text
+  goal_id     bigint [ref: > goals.id]
+  created_at  timestamptz
+  updated_at  timestamptz
+}
+
+// ACLs (visibility/permissions)
+
+table goal_acl {
+  goal_id bigint [ref: > goals.id]
+  user_id bigint [ref: > users.id]
+  role    role_type
+  indexes {
+    (goal_id, user_id) [pk]
+    user_id
+  }
+}
+
+table piggy_bank_acl {
+  piggy_bank_id bigint [ref: > piggy_banks.id]
+  user_id       bigint [ref: > users.id]
+  role          role_type
+  indexes {
+    (piggy_bank_id, user_id) [pk]
+    user_id
+  }
+}
+
+// Unified transactions
+// direction: income|expense
+// kind: applies only when direction = expense (default|goal|bank)
+
+enum txn_type {
+  income
+  expense
+}
+
+enum expense_kind {
+  default
+  goal
+  bank
+}
+
+table transactions {
+  id            bigserial [pk]
+  type          txn_type
+  kind          expense_kind [note: 'NULL for income; required for expense']
+  amount        numeric(14,2)
+  description   text
+  user_id       bigint [ref: > users.id] // business actor/beneficiary
+  created_by    bigint [ref: > users.id] // who created the row (for edit/delete own)
+  goal_id       bigint [ref: > goals.id]
+  piggy_bank_id bigint [ref: > piggy_banks.id]
+  occurred_at   timestamptz
+  created_at    timestamptz
+  updated_at    timestamptz
+
+  Note: 'Invariant (to enforce in DB):\n    (direction = income => kind NULL, goal_id NULL, piggy_bank_id NULL)\n    (direction = expense & kind = default => no links)\n    (direction = expense & kind = goal    => goal_id required)\n    (direction = expense & kind = bank    => piggy_bank_id required)'
+
+  indexes {
+    (user_id, occurred_at)
+    (created_by, occurred_at)
+    type
+    kind
+    goal_id
+    piggy_bank_id
+  }
+}
+
+// Optional explicit sharing of a single transaction
+
+table transaction_acl {
+  transaction_id bigint [ref: > transactions.id]
+  user_id        bigint [ref: > users.id]
+  role           role_type
+  indexes {
+    (transaction_id, user_id) [pk]
+    user_id
+  }
+}
+
+// Relationships (redundant with inline refs, kept for clarity)
+// Ref: piggy_banks.goal_id > goals.id
+// Ref: goal_acl.goal_id > goals.id
+// Ref: goal_acl.user_id > users.id
+// Ref: piggy_bank_acl.piggy_bank_id > piggy_banks.id
+// Ref: piggy_bank_acl.user_id > users.id
+// Ref: transactions.user_id > users.id
+// Ref: transactions.created_by > users.id
+// Ref: transactions.goal_id > goals.id
+// Ref: transactions.piggy_bank_id > piggy_banks.id
+// Ref: transaction_acl.transaction_id > transactions.id
+// Ref: transaction_acl.user_id > users.id

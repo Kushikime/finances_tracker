@@ -1,0 +1,6 @@
+# dbmate configuration file
+# See: https://github.com/amacneil/dbmate#configuration-file
+
+database_url: '${DATABASE_URL}'
+directory: 'db/migrations'
+migrations_table_name: 'schema_migrations'
