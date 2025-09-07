@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { query } from '../../db/query';
-import { userSchema, User as DbUser } from '@shared/contracts/db.zod';
+import { userSchema, User as DbUser } from '@acme/shared';
 import * as bcrypt from 'bcryptjs';
 
 export type User = DbUser;

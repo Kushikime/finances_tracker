@@ -29,6 +29,9 @@ importers:
       passport-jwt:
         specifier: ^4.0.1
         version: 4.0.1
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       zod:
         specifier: 3.22.4
         version: 3.22.4
@@ -51,6 +54,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@acme/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@nestjs/common':
         specifier: ^11.1.6
         version: 11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -127,6 +133,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@acme/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -150,22 +159,7 @@ importers:
         specifier: ^7.1.4
         version: 7.1.4(@types/node@24.3.1)(terser@5.44.0)(tsx@4.20.5)
 
-  packages/contract:
-    dependencies:
-      '@ts-rest/core':
-        specifier: ^3.52.1
-        version: 3.52.1(@types/node@24.3.1)(zod@3.22.4)
-      '@ts-rest/nest':
-        specifier: ^3.52.1
-        version: 3.52.1(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)(@ts-rest/core@3.52.1(@types/node@24.3.1)(zod@3.22.4))(rxjs@7.8.2)(zod@3.22.4)
-      '@ts-rest/open-api':
-        specifier: ^3.52.1
-        version: 3.52.1(@ts-rest/core@3.52.1(@types/node@24.3.1)(zod@3.22.4))(zod@3.22.4)
-      zod:
-        specifier: 3.22.4
-        version: 3.22.4
-
-  packages/schemas:
+  packages/shared:
     dependencies:
       zod:
         specifier: 3.22.4
@@ -2180,6 +2174,11 @@ packages:
   restore-cursor@3.1.0:
     resolution: {integrity: sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA==}
     engines: {node: '>=8'}
+
+  rimraf@6.0.1:
+    resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
+    engines: {node: 20 || >=22}
+    hasBin: true
 
   rollup@4.50.1:
     resolution: {integrity: sha512-78E9voJHwnXQMiQdiqswVLZwJIzdBKJ1GdI5Zx6XwoFKUIk09/sSrr+05QFzvYb8q6Y9pPV45zzDuYa3907TZA==}
@@ -4613,6 +4612,11 @@ snapshots:
     dependencies:
       onetime: 5.1.2
       signal-exit: 3.0.7
+
+  rimraf@6.0.1:
+    dependencies:
+      glob: 11.0.3
+      package-json-from-dist: 1.0.1
 
   rollup@4.50.1:
     dependencies:

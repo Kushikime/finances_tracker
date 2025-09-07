@@ -18,6 +18,9 @@
     "dev": "turbo run dev",
     "dev:api": "pnpm --filter api dev",
     "dev:web": "pnpm --filter web dev",
+    "start:api": "pnpm --filter api start",
+    "start:web": "pnpm --filter web preview",
+    "start:all": "pnpm run start:api & pnpm run start:web",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "typecheck": "turbo run typecheck",
@@ -32,6 +35,7 @@
     "@ts-rest/open-api": "^3.52.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "rimraf": "^6.0.1",
     "zod": "3.22.4"
   }
 }

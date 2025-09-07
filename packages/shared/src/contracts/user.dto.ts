@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const RegisterUserDto = z.object({
+export const RegisterUserSchema = z.object({
   email: z
     .string({ required_error: 'Email is required' })
     .email('Invalid email address'),
@@ -15,4 +15,4 @@ export const RegisterUserDto = z.object({
     .min(1, 'Surname is required'),
 });
 
-export type RegisterUserDto = z.infer<typeof RegisterUserDto>;
+export type RegisterUserDto = z.infer<typeof RegisterUserSchema>;

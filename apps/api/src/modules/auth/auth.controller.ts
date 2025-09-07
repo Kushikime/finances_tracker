@@ -11,24 +11,16 @@ import { ZodValidationPipe } from '../../common/zod-validation.pipe';
 
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
-import {
-  LoginInput,
-  LoginOutput,
-  UserPublic,
-  ErrorEnvelope,
-} from '@shared/contracts/auth.zod';
-import {
-  RegisterUserDto,
-  RegisterUserDto as RegisterUserDtoType,
-} from '@shared/contracts/user.dto';
+import { RegisterUserSchema, UserPublic, LoginInput, ErrorEnvelope } from '@acme/shared';
+import type { RegisterUserDto } from '@acme/shared';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @UsePipes(new ZodValidationPipe(RegisterUserDto))
-  async register(@Body() body: RegisterUserDtoType) {
+  @UsePipes(new ZodValidationPipe(RegisterUserSchema))
+  async register(@Body() body: RegisterUserDto) {
     const { email, password, name, surname } = body;
     const user = await this.authService.register(
       email,

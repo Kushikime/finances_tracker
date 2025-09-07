@@ -2,13 +2,18 @@
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
     "dev": {
-      "dependsOn": [],
+      "dependsOn": ["^build"],
       "outputs": [],
-      "cache": false
+      "cache": false,
+      "filter": "apps/**"
     },
     "build": {
-      "dependsOn": [],
-      "outputs": ["apps/api/dist/**", "apps/web/dist/**"]
+      "dependsOn": ["^build"],
+      "outputs": [
+        "apps/api/dist/**",
+        "apps/web/dist/**",
+        "packages/shared/dist/**"
+      ]
     },
     "lint": {
       "outputs": []
