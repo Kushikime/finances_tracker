@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "../../",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
@@ -10,5 +10,5 @@
     "target": "ES2022",
     "module": "Node16"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "../../shared/**/*"]
 }
