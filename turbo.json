@@ -1,10 +1,23 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
-    "build": {},
-    "dev": {},
-    "lint": {},
-    "typecheck": {},
-    "clean": {}
+  "tasks": {
+    "dev": {
+      "dependsOn": [],
+      "outputs": [],
+      "cache": false
+    },
+    "build": {
+      "dependsOn": [],
+      "outputs": ["apps/api/dist/**", "apps/web/dist/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "clean": {
+      "outputs": []
+    }
   }
 }
