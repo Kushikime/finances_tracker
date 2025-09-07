@@ -1,3 +1,4 @@
+import '../env-setup';
 import { Pool } from 'pg';
 import { getDbConfig } from '../config/env.util';
 

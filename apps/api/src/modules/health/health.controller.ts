@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { query } from '../db/query';
+import { query } from '../../db/query';
 
-// Controller for /health/db endpoint, runs a lightweight DB check
 @Controller('health')
 export class HealthController {
   @Get('db')
