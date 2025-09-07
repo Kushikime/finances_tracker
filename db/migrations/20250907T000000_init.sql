@@ -1,26 +1,6 @@
 
 -- migrate:up
--- migrate:down
-DROP INDEX IF EXISTS idx_transaction_acl_user_id;
-DROP TABLE IF EXISTS transaction_acl;
-DROP INDEX IF EXISTS idx_transactions_piggy_bank_id;
-DROP INDEX IF EXISTS idx_transactions_goal_id;
-DROP INDEX IF EXISTS idx_transactions_kind;
-DROP INDEX IF EXISTS idx_transactions_type;
-DROP INDEX IF EXISTS idx_transactions_created_by_occurred_at;
-DROP INDEX IF EXISTS idx_transactions_user_id_occurred_at;
-DROP TABLE IF EXISTS transactions;
-DROP INDEX IF EXISTS idx_piggy_bank_acl_user_id;
-DROP TABLE IF EXISTS piggy_bank_acl;
-DROP INDEX IF EXISTS idx_goal_acl_user_id;
-DROP TABLE IF EXISTS goal_acl;
-DROP TABLE IF EXISTS piggy_banks;
-DROP TABLE IF EXISTS goals;
-DROP TABLE IF EXISTS users;
-DROP TYPE IF EXISTS expense_kind;
-DROP TYPE IF EXISTS txn_type;
-DROP TYPE IF EXISTS role_type;
-
+CREATE EXTENSION IF NOT EXISTS citext;
 CREATE TYPE role_type AS ENUM ('viewer', 'editor', 'admin');
 CREATE TYPE txn_type AS ENUM ('income', 'expense');
 CREATE TYPE expense_kind AS ENUM ('default', 'goal', 'bank');
@@ -98,3 +78,24 @@ CREATE TABLE transaction_acl (
   PRIMARY KEY (transaction_id, user_id)
 );
 CREATE INDEX idx_transaction_acl_user_id ON transaction_acl(user_id);
+
+-- migrate:down
+DROP INDEX IF EXISTS idx_transaction_acl_user_id;
+DROP TABLE IF EXISTS transaction_acl;
+DROP INDEX IF EXISTS idx_transactions_piggy_bank_id;
+DROP INDEX IF EXISTS idx_transactions_goal_id;
+DROP INDEX IF EXISTS idx_transactions_kind;
+DROP INDEX IF EXISTS idx_transactions_type;
+DROP INDEX IF EXISTS idx_transactions_created_by_occurred_at;
+DROP INDEX IF EXISTS idx_transactions_user_id_occurred_at;
+DROP TABLE IF EXISTS transactions;
+DROP INDEX IF EXISTS idx_piggy_bank_acl_user_id;
+DROP TABLE IF EXISTS piggy_bank_acl;
+DROP INDEX IF EXISTS idx_goal_acl_user_id;
+DROP TABLE IF EXISTS goal_acl;
+DROP TABLE IF EXISTS piggy_banks;
+DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS users;
+DROP TYPE IF EXISTS expense_kind;
+DROP TYPE IF EXISTS txn_type;
+DROP TYPE IF EXISTS role_type;
