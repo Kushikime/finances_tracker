@@ -6,4 +6,9 @@ export class AppController {
   getHello(): string {
     return 'Hello from NestJS API!';
   }
+
+  @Get('health')
+  health(): { status: string } {
+    return { status: 'ok' };
+  }
 }
