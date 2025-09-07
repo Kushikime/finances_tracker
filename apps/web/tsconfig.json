@@ -4,7 +4,8 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "6.0",
+    "target": "ESNext"
   },
   "include": ["src", "vite.config.ts"],
   "types": ["vite/client"]
