@@ -2,6 +2,10 @@
 
 Monorepo for personal finance tracker using pnpm and Turborepo.
 
+## CI Status
+
+![CI](https://github.com/Kushikime/finances_tracker/actions/workflows/ci.yml/badge.svg)
+
 ## Getting Started
 
 ### Install dependencies
