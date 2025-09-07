@@ -8,9 +8,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
+    "lib": ["esnext", "dom"],
     "paths": {
       "@api/*": ["apps/api/src/*"],
-      "@web/*": ["apps/web/src/*"]
+      "@web/*": ["apps/web/src/*"],
+      "@shared/*": ["shared/*"]
     }
   }
 }
