@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { query } from '../../db/query';
+import type { PoolClient } from 'pg';
 import { userSchema, User as DbUser } from '@acme/shared';
 import * as bcrypt from 'bcryptjs';
 
@@ -15,17 +16,56 @@ export class AuthService {
     password: string,
     name: string,
     surname: string,
+    client?: PoolClient,
   ): Promise<User> {
-    const password_hash = await bcrypt.hash(password, 10);
-    const result = await query<DbUser>(
-      `INSERT INTO users (email, password_hash, name, surname, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, NOW(), NOW())
-       RETURNING *`,
-      [email, password_hash, name, surname],
+    // Check if user already exists
+    const existing = await query<DbUser>(
+      `SELECT id FROM users WHERE email = $1`,
+      [email],
+      client,
     );
-    return userSchema.parse(result.rows[0]);
+    if (existing.rows.length > 0) {
+      throw new BadRequestException({
+        statusCode: 400,
+        error: 'Validation failed',
+        details: [
+          {
+            field: 'email',
+            message: 'A user with this email already exists',
+            code: 'duplicate',
+          },
+        ],
+      });
+    }
+    const password_hash = await bcrypt.hash(password, 10);
+    try {
+      const result = await query<DbUser>(
+        `INSERT INTO users (email, password_hash, name, surname, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, NOW(), NOW())
+         RETURNING *`,
+        [email, password_hash, name, surname],
+        client,
+      );
+      return result.rows[0]; // Let controller handle UserPublic.parse and rollback if needed
+    } catch (err: any) {
+      // Fallback for race condition or DB error
+      if (err.code === '23505') {
+        // Postgres unique violation
+        throw new BadRequestException({
+          statusCode: 400,
+          error: 'Validation failed',
+          details: [
+            {
+              field: 'email',
+              message: 'A user with this email already exists',
+              code: 'duplicate',
+            },
+          ],
+        });
+      }
+      throw err;
+    }
   }
-
   async validateUser(email: string, password: string): Promise<User | null> {
     const result = await query<DbUser>(`SELECT * FROM users WHERE email = $1`, [
       email,
@@ -33,7 +73,7 @@ export class AuthService {
     const user = result.rows[0];
     if (!user) return null;
     const valid = await bcrypt.compare(password, user.password_hash);
-    return valid ? userSchema.parse(user) : null;
+    return valid ? user : null;
   }
 
   async login(user: User) {
@@ -55,6 +95,6 @@ export class AuthService {
       id,
     ]);
     const user = result.rows[0];
-    return user ? userSchema.parse(user) : undefined;
+    return user ? user : undefined;
   }
 }

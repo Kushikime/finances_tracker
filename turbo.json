@@ -4,8 +4,7 @@
     "dev": {
       "dependsOn": ["^build"],
       "outputs": [],
-      "cache": false,
-      "filter": "apps/**"
+      "cache": false
     },
     "build": {
       "dependsOn": ["^build"],

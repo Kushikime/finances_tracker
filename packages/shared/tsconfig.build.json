@@ -7,7 +7,7 @@
     "emitDeclarationOnly": false,
     "composite": false,
     "rootDir": "src",
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "target": "ESNext",
     "esModuleInterop": true,

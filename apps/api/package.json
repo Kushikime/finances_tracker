@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "nest start --watch",
     "build": "nest build",
     "start": "node dist/main.js"
   },

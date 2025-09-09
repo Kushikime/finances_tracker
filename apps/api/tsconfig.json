@@ -7,8 +7,7 @@
     "useDefineForClassFields": false,
     "moduleResolution": "node",
     "target": "ES2022",
-    "module": "commonjs",
-    "ignoreDeprecations": "6.0"
+    "module": "commonjs"
   },
   "include": ["src/**/*"]
 }
