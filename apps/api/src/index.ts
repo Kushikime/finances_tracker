@@ -2,8 +2,10 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 import { appRouter } from './router';
 import type { AppRouter } from './router';
+import type { Context } from './trpc';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -25,7 +27,15 @@ app.use(
   '/trpc',
   createExpressMiddleware({
     router: appRouter,
-    createContext: () => ({}),
+    createContext: async ({ req }: CreateExpressContextOptions): Promise<Context> => {
+      // In a real app, you'd extract the user from JWT token
+      // and fetch the user from the database
+      // For now, returning empty context is fine
+      return {
+        // Will be populated by middleware in a real app
+        user: undefined,
+      };
+    },
   }),
 );
 
