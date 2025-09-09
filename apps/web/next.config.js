@@ -20,19 +20,19 @@ const nextConfig = {
         {
           key: 'X-XSS-Protection',
           value: '1',
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
-  
+
   // TypeScript will handle type checking
   typescript: {
     ignoreBuildErrors: false,
   },
-  
+
   // Transpilation settings
   transpilePackages: ['shared'],
-  
+
   // Enable React strict mode for better development
   reactStrictMode: true,
 };
