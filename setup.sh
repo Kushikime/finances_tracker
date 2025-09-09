@@ -12,14 +12,14 @@ echo "⚙️  Creating environment files..."
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env.local
 
-# Set up database
-echo "🗄️  Setting up database..."
-docker-compose up -d postgres
-
 # Build packages
 echo "🏗️  Building shared packages..."
 pnpm --filter db build
 pnpm --filter shared build
+
+# Push the database schema
+echo "🗃️  Setting up database schema..."
+cd packages/db && pnpm db:push
 
 # Final message
 echo "✅ Setup complete!"
