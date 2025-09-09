@@ -150,18 +150,31 @@ The shared package contains code used by both frontend and backend:
    - Users table
    - Transactions table
    - Categories table
+   - Goals table
+   - Envelopes (piggy banks) table
+   - Various junction tables for many-to-many relationships
 
 2. **Migrations**:
    - Initial schema creation
 
+3. **Local PostgreSQL Configuration**:
+   - Running locally (no Docker required)
+   - Username: kushi
+   - Password: 0127887
+
 ## Development Workflow
 
-1. **Local Development**:
+1. **Development Order**:
+   - Database schemas and migrations should be developed first
+   - API endpoints should be implemented based on the database schemas
+   - Frontend UI should be built last, consuming the API endpoints
+
+2. **Local Development**:
    - Run `pnpm dev` to start all services
    - Frontend available at `localhost:3000`
    - Backend available at `localhost:4000`
 
-2. **Building**:
+3. **Building**:
    - Run `pnpm build` to build all packages
    - TypeScript compilation
    - Next.js optimization
